@@ -6,10 +6,12 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm, scale } from "../utils/typography"
 
+import Comments from '../components/comments'
+
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata.title
-  const { previous, next } = pageContext
+  const { slug, previous, next } = pageContext
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -74,6 +76,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
           </li>
         </ul>
       </nav>
+      <Comments slug={slug}/>
     </Layout>
   )
 }

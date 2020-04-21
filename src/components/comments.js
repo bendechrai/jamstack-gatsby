@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useAuth0 } from './auth/auth0-wrapper';
 
 const Comments = ({slug}) => {
     const [comments, setComments] = useState([]);
+    const { isAuthenticated, accessToken } = useAuth0()
 
     slug = slug.replace(/^\/|\/$/g, '')
 
@@ -25,14 +27,17 @@ const Comments = ({slug}) => {
                             <p style={{ textAlign: `right` }}>&mdash; {comment.author}</p>
                         </blockquote>
                         <p style={{ textAlign: `right`, marginBottom: `0px`, marginRight: `1.75rem`, fontSize: `8px` }}>
-                            <a href="#" onClick={(event) => {
+                            <button hidden={!isAuthenticated} style={{ border: `1px solid #f88`, borderRadius: `5px`, padding: `0.1rem 1rem`, backgroundColor: `#fdd` }} onClick={(event) => {
                                 event.preventDefault()
                                 fetch(process.env.GATSBY_API + "/comments/" + slug + "/" + comment.id, {
                                     method: 'DELETE',
+                                    headers: {
+                                        authorization: "Bearer " + accessToken,
+                                    },
                                 }).then(res => {
                                     loadComments(slug)
                                 })
-                            }}>delete</a>
+                            }}>delete</button>
                         </p>
                     </div>
                 ))}

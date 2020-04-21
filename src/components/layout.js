@@ -2,8 +2,36 @@ import React from "react"
 import { Link } from "gatsby"
 
 import { rhythm, scale } from "../utils/typography"
+import { useAuth0 } from "./auth/auth0-wrapper"
+
+const LogInOut = () => {
+  const { isAuthenticated, logout, loginWithRedirect } = useAuth0()
+  if(isAuthenticated) {
+    return(
+      <Link      
+        onClick={(event) => {
+          event.preventDefault()
+          logout({
+              returnTo:
+                process.env.AUTH0_LOGOUT_URL ||
+                process.env.GATSBY_AUTH0_LOGOUT_URL,
+          })
+        }}>Logout</Link>
+    )
+  } else {
+    return(
+      <Link onClick={async (event) => {
+        event.preventDefault()
+        await loginWithRedirect({
+          appState: { targetUrl: window.location.pathname },
+        })  
+      }}>Login</Link>
+    )
+  }
+}
 
 const Layout = ({ location, title, children }) => {
+
   const rootPath = `${__PATH_PREFIX__}/`
   let header
 
@@ -61,7 +89,9 @@ const Layout = ({ location, title, children }) => {
       <footer>
         © {new Date().getFullYear()}, Built with
         {` `}
-        <a href="https://www.gatsbyjs.org">Gatsby</a>
+        <a href="https://www.gatsbyjs.org">Gatsby</a>.
+        {` `}
+        <LogInOut/>
       </footer>
     </div>
   )

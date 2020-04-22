@@ -1,3 +1,7 @@
+/**
+ * This file was copied from https://github.com/NWRichmond/gatsby-auth0-spa-example
+*/
+
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import createAuth0Client from '@auth0/auth0-spa-js';

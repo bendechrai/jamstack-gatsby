@@ -20,7 +20,8 @@ const LogInOut = () => {
     )
   } else {
     return(
-      <Link onClick={async (event) => {
+      <Link
+      onClick={async (event) => {
         event.preventDefault()
         await loginWithRedirect({
           appState: { targetUrl: window.location.pathname },
